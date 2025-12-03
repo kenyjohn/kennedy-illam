@@ -59,7 +59,7 @@ const AdminDashboardNew: React.FC = () => {
             <aside className="w-64 bg-primary text-white hidden md:block fixed h-full">
                 <div className="p-6">
                     <div className="flex items-center gap-2 mb-8">
-                        <img src="/logo-white.png" alt="Logo" className="h-8 w-auto" />
+                        <img src="/logo-transparent.png" alt="Logo" className="h-8 w-auto" />
                         <span className="font-bold text-lg">Admin Panel</span>
                     </div>
 
