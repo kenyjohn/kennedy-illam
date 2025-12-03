@@ -1,0 +1,153 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Property {
+  id          String          @id @default(uuid())
+  title       String
+  description String
+  address     String?         // Approximate location
+  city        String
+  state       String          @default("USA")
+  zip         String?
+  price       Int
+  bedrooms    Int
+  bathrooms   Float
+  sqft        Int?
+  available   Boolean         @default(true)
+  availableDate DateTime?
+  petsAllowed Boolean         @default(false)
+  features    String?         // Comma separated list of features
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  images      PropertyImage[]
+  inquiries   Inquiry[]
+  applications Application[]
+  showings    Showing[]
+  showingAvailability ShowingAvailability[]
+}
+
+model PropertyImage {
+  id         String   @id @default(uuid())
+  url        String
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+}
+
+model Inquiry {
+  id              String    @id @default(uuid())
+  propertyId      String?
+  property        Property? @relation(fields: [propertyId], references: [id])
+  name            String
+  email           String
+  phone           String?
+  message         String
+  inquiryType     String    // "SHOWING", "QUESTION", "GENERAL"
+  preferredDate   DateTime?
+  preferredTime   String?
+  status          String    @default("NEW") // NEW, CONTACTED, SCHEDULED, COMPLETED
+  createdAt       DateTime  @default(now())
+}
+
+model Application {
+  id                      String    @id @default(uuid())
+  propertyId              String
+  property                Property  @relation(fields: [propertyId], references: [id])
+  
+  // Personal Information
+  firstName               String
+  lastName                String
+  email                   String
+  phone                   String
+  dateOfBirth             DateTime?
+  
+  // Move-in Details
+  desiredMoveInDate       DateTime?
+  leaseTerm               String?
+  numberOfOccupants       Int?
+  hasPets                 Boolean   @default(false)
+  petDetails              String?
+  
+  // Employment
+  employmentStatus        String?
+  employer                String?
+  jobTitle                String?
+  monthlyIncome           Float?
+  
+  // Rental History
+  currentAddress          String?
+  landlordName            String?
+  landlordPhone           String?
+  reasonForLeaving        String?
+  
+  // References
+  reference1Name          String?
+  reference1Phone         String?
+  reference1Relationship  String?
+  reference2Name          String?
+  reference2Phone         String?
+  reference2Relationship  String?
+  
+  // Additional
+  additionalInfo          String?
+  status                  String    @default("PENDING") // PENDING, REVIEWING, APPROVED, REJECTED
+  
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+}
+
+model Showing {
+  id                String    @id @default(uuid())
+  propertyId        String
+  property          Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  // Tenant Information
+  name              String
+  email             String
+  phone             String
+  
+  // Scheduling
+  scheduledDate     DateTime
+  scheduledTime     String    // e.g., "10:00 AM"
+  duration          Int       @default(30) // minutes
+  
+  // Status
+  status            String    @default("PENDING") // PENDING, CONFIRMED, CANCELLED, COMPLETED
+  notes             String?
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model ShowingAvailability {
+  id                String    @id @default(uuid())
+  propertyId        String
+  property          Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  dayOfWeek         Int       // 0-6 (Sunday-Saturday)
+  startTime         String    // e.g., "09:00"
+  endTime           String    // e.g., "17:00"
+  slotDuration      Int       @default(30) // minutes
+  isActive          Boolean   @default(true)
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}

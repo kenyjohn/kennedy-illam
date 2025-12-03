@@ -10,3 +10,52 @@ html, body {
 body {
   @apply bg-slate-50 text-slate-900 font-sans;
 }
+
+/* Calendar Styles */
+.showing-calendar .react-calendar {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+}
+
+.showing-calendar .react-calendar__tile {
+  padding: 1rem 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.showing-calendar .react-calendar__tile:enabled:hover,
+.showing-calendar .react-calendar__tile:enabled:focus {
+  background-color: #f1f5f9;
+}
+
+.showing-calendar .react-calendar__tile--active {
+  background-color: #1e293b !important;
+  color: white;
+}
+
+.showing-calendar .react-calendar__tile--now {
+  background-color: #fef3c7;
+}
+
+.showing-calendar .react-calendar__navigation button {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.showing-calendar .react-calendar__navigation button:enabled:hover,
+.showing-calendar .react-calendar__navigation button:enabled:focus {
+  background-color: #f1f5f9;
+}
+
+.showing-calendar .react-calendar__month-view__weekdays {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.showing-calendar .react-calendar__tile:disabled {
+  background-color: #f8fafc;
+  color: #cbd5e1;
+}

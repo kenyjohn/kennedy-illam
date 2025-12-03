@@ -14,6 +14,7 @@ interface PropertyCardProps {
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
+    id,
     title,
     location,
     price,
@@ -66,7 +67,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
                 </div>
 
                 <Link
-                    to={`/properties`}
+                    to={`/properties/${id}`}
                     className="mt-6 block w-full text-center bg-primary text-white py-2 rounded-lg hover:bg-slate-700 transition-colors font-medium"
                 >
                     View Details

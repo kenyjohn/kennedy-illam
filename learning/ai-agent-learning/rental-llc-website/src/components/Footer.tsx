@@ -1,10 +1,11 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
     return (
         <footer className="bg-primary text-white pt-12 pb-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
                     {/* Brand Info */}
                     <div>
@@ -21,9 +22,19 @@ const Footer: React.FC = () => {
                     <div>
                         <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
                         <ul className="space-y-2">
-                            <li><a href="/" className="text-gray-300 hover:text-secondary transition-colors">Home</a></li>
-                            <li><a href="/properties" className="text-gray-300 hover:text-secondary transition-colors">Properties</a></li>
-                            <li><a href="/contact" className="text-gray-300 hover:text-secondary transition-colors">Contact Us</a></li>
+                            <li><Link to="/" className="text-gray-300 hover:text-secondary transition-colors">Home</Link></li>
+                            <li><Link to="/properties" className="text-gray-300 hover:text-secondary transition-colors">Properties</Link></li>
+                            <li><Link to="/contact" className="text-gray-300 hover:text-secondary transition-colors">Contact Us</Link></li>
+                        </ul>
+                    </div>
+
+                    {/* Legal */}
+                    <div>
+                        <h4 className="text-lg font-semibold mb-4">Legal</h4>
+                        <ul className="space-y-2">
+                            <li><Link to="/privacy" className="text-gray-300 hover:text-secondary transition-colors">Privacy Policy</Link></li>
+                            <li><Link to="/terms" className="text-gray-300 hover:text-secondary transition-colors">Terms of Service</Link></li>
+                            <li><Link to="/fair-housing" className="text-gray-300 hover:text-secondary transition-colors">Fair Housing</Link></li>
                         </ul>
                     </div>
 
@@ -48,7 +59,7 @@ const Footer: React.FC = () => {
                 </div>
 
                 <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
-                    <p>&copy; {new Date().getFullYear()} Kennedy Illam. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Kennedy Illam. All rights reserved. | Equal Housing Opportunity</p>
                 </div>
             </div>
         </footer>

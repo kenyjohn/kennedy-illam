@@ -1,73 +1,79 @@
-# React + TypeScript + Vite
+# Rental LLC Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive rental property management website built with React, TypeScript, Vite, and Node.js/Express.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Public Interface
+- **Home Page**: Featured properties and company overview.
+- **Properties Listing**: Browse available rental properties with filtering.
+- **Property Details**: Detailed view of property features, images, and location.
+- **Contact Form**: Easy way for potential tenants to get in touch.
+- **Application Form**: Online rental application submission.
 
-## React Compiler
+### Admin Dashboard (Phase 2)
+- **Secure Login**: Admin authentication system.
+- **Dashboard Overview**: Quick stats on total properties, applications, and showings.
+- **Property Management**:
+  - View all properties in a table format.
+  - Add new properties with details and images.
+  - Edit existing property information.
+  - Delete properties.
+  - Toggle property availability status.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS
+- **Backend**: Node.js, Express, Prisma (SQLite)
+- **State Management**: React Hooks
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
+- Node.js (v18+ recommended)
+- npm
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Installation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1.  Clone the repository.
+2.  Install dependencies for both frontend and backend:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+    ```bash
+    # Root directory (Frontend)
+    npm install
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+    # Server directory (Backend)
+    cd server
+    npm install
+    ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3.  Set up the database:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+    ```bash
+    cd server
+    npx prisma migrate dev
+    npx prisma db seed
+    ```
+
+### Running the Application
+
+1.  Start the backend server:
+
+    ```bash
+    cd server
+    npm run dev
+    ```
+
+2.  Start the frontend development server:
+
+    ```bash
+    # In a new terminal, from root directory
+    npm run dev
+    ```
+
+3.  Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## Phase 2 Implementation Details
+- Integrated Admin Dashboard with real backend data.
+- Created `AdminProperties` page for full CRUD operations on properties.
+- Updated `AdminDashboard` to reflect real-time property counts.
+- Fixed backend module resolution issues by migrating to `tsx`.
