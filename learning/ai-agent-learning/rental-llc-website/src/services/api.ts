@@ -1,4 +1,4 @@
-import type { Property, Showing, Availability, ApplicationForm, ContactForm } from '../types';
+import type { Property, Showing, Availability, ApplicationForm, ContactForm, Application } from '../types';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
@@ -83,14 +83,15 @@ export const api = {
     },
     availability: {
         getByProperty: async (propertyId: string): Promise<Availability[]> => {
-            const response = await fetch(`${API_BASE_URL}/availability/property/${propertyId}`, {
+            const response = await fetch(`${API_BASE_URL}/availability/${propertyId}`, {
                 headers: getHeaders(),
             });
             if (!response.ok) throw new Error('Failed to fetch availability');
             return response.json();
         },
         create: async (data: Partial<Availability>): Promise<Availability> => {
-            const response = await fetch(`${API_BASE_URL}/availability`, {
+            if (!data.propertyId) throw new Error('Property ID is required');
+            const response = await fetch(`${API_BASE_URL}/availability/${data.propertyId}`, {
                 method: 'POST',
                 headers: getHeaders(),
                 body: JSON.stringify(data),
@@ -123,10 +124,20 @@ export const api = {
         }
     },
     applications: {
+        getAll: async (): Promise<Application[]> => {
+            const response = await fetch(`${API_BASE_URL}/applications`, {
+                headers: getHeaders(),
+            });
+            if (!response.ok) throw new Error('Failed to fetch applications');
+            return response.json();
+        },
         submit: async (data: ApplicationForm): Promise<void> => {
-            // Mock submission for now
-            console.log('Application submitted:', data);
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            const response = await fetch(`${API_BASE_URL}/applications`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            if (!response.ok) throw new Error('Failed to submit application');
         }
     }
 };

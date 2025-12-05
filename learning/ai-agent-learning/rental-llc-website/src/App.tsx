@@ -12,6 +12,9 @@ import ApplicationForm from './pages/ApplicationForm';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import FairHousing from './pages/FairHousing';
+import AdminShowings from './pages/AdminShowings';
+import AdminApplications from './pages/AdminApplications';
+import AvailabilityManager from './pages/AvailabilityManager';
 
 // Layout component for public pages
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
@@ -30,6 +33,9 @@ function App() {
         <Route path="/admin/login" element={<AdminLoginNew />} />
         <Route path="/admin/dashboard" element={<AdminDashboardNew />} />
         <Route path="/admin/properties" element={<AdminProperties />} />
+        <Route path="/admin/showings" element={<AdminShowings />} />
+        <Route path="/admin/applications" element={<AdminApplications />} />
+        <Route path="/admin/properties/:propertyId/availability" element={<AvailabilityManager />} />
 
         {/* Public routes (with navbar/footer) */}
         <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { LogOut, LayoutDashboard, Home, Calendar, Users, Plus } from 'lucide-react';
 import PropertyTable from '../components/admin/PropertyTable';
 import PropertyForm from '../components/admin/PropertyForm';
@@ -192,22 +192,22 @@ const AdminProperties: React.FC = () => {
                     </div>
 
                     <nav className="space-y-2">
-                        <a href="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
+                        <Link to="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
                             <LayoutDashboard size={20} />
                             Dashboard
-                        </a>
-                        <a href="/admin/properties" className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-lg text-white">
+                        </Link>
+                        <Link to="/admin/properties" className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-lg text-white">
                             <Home size={20} />
                             Properties
-                        </a>
-                        <a href="#" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
+                        </Link>
+                        <Link to="/admin/showings" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
                             <Calendar size={20} />
                             Showings
-                        </a>
-                        <a href="#" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
+                        </Link>
+                        <Link to="/admin/applications" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
                             <Users size={20} />
                             Applications
-                        </a>
+                        </Link>
                     </nav>
                 </div>
 

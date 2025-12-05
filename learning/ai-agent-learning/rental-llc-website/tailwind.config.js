@@ -7,12 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#1e293b', // Slate 800
-        secondary: '#ca8a04', // Yellow 600 (Gold-ish)
-        accent: '#f8fafc', // Slate 50
+        primary: '#0B1120', // Rich Navy (was Slate 800)
+        secondary: '#D4AF37', // Classic Gold (was Yellow 600)
+        accent: '#F5F5F0', // Warm Off-White (was Slate 50)
+        surface: '#1C2535', // Dark Blue-Grey for cards
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        serif: ['"Playfair Display"', 'serif'],
       },
     },
   },

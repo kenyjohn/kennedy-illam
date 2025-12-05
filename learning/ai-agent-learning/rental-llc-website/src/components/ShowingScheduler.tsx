@@ -3,6 +3,7 @@ import { X, Calendar as CalendarIcon, Clock } from 'lucide-react';
 import Calendar from 'react-calendar';
 import { format, addDays, isBefore, startOfDay } from 'date-fns';
 import 'react-calendar/dist/Calendar.css';
+import { api } from '../services/api';
 
 interface ShowingSchedulerProps {
     propertyId: string;
@@ -44,15 +45,7 @@ const ShowingScheduler: React.FC<ShowingSchedulerProps> = ({ propertyId, propert
         setError('');
         try {
             const dateStr = format(date, 'yyyy-MM-dd');
-            const response = await fetch(
-                `http://localhost:3001/api/showings/property/${propertyId}/available-slots?date=${dateStr}`
-            );
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch available slots');
-            }
-
-            const slots = await response.json();
+            const slots = await api.showings.getAvailableSlots(propertyId, dateStr);
             setAvailableSlots(slots);
             setSelectedSlot(null);
         } catch (err: any) {
@@ -71,23 +64,13 @@ const ShowingScheduler: React.FC<ShowingSchedulerProps> = ({ propertyId, propert
         setError('');
 
         try {
-            const response = await fetch('http://localhost:3001/api/showings', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    propertyId,
-                    ...formData,
-                    scheduledDate: format(selectedDate, 'yyyy-MM-dd'),
-                    scheduledTime: selectedSlot.time,
-                    duration: selectedSlot.duration,
-                }),
+            await api.showings.create({
+                propertyId,
+                ...formData,
+                scheduledDate: format(selectedDate, 'yyyy-MM-dd'),
+                scheduledTime: selectedSlot.time,
+                duration: selectedSlot.duration,
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to schedule showing');
-            }
 
             setSuccess(true);
             setTimeout(() => onClose(), 2000);
@@ -204,8 +187,8 @@ const ShowingScheduler: React.FC<ShowingSchedulerProps> = ({ propertyId, propert
                                             key={slot.value}
                                             onClick={() => setSelectedSlot(slot)}
                                             className={`p-3 rounded-lg border-2 transition-all ${selectedSlot?.value === slot.value
-                                                    ? 'border-primary bg-primary text-white'
-                                                    : 'border-gray-200 hover:border-primary hover:bg-blue-50'
+                                                ? 'border-primary bg-primary text-white'
+                                                : 'border-gray-200 hover:border-primary hover:bg-blue-50'
                                                 }`}
                                         >
                                             <div className="font-medium">{slot.time}</div>

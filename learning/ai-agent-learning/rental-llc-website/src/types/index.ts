@@ -98,3 +98,22 @@ export interface ApplicationForm {
         details: string;
     };
 }
+
+export interface Application {
+    id: string;
+    propertyId: string;
+    property?: {
+        title: string;
+        address: string;
+        city: string;
+        state: string;
+    };
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    status: 'PENDING' | 'REVIEWING' | 'APPROVED' | 'REJECTED';
+    createdAt: string;
+    updatedAt: string;
+    // Add other fields as needed
+}

@@ -72,7 +72,7 @@ const PropertyTable: React.FC<PropertyTableProps> = ({
                                     <div className="flex flex-col gap-2">
                                         <div className="flex gap-2">
                                             <Link
-                                                to={`/admin/availability/${property.id}`}
+                                                to={`/admin/properties/${property.id}/availability`}
                                                 className="text-secondary hover:text-amber-700 inline-flex items-center gap-1"
                                             >
                                                 <Clock size={16} />

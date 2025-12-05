@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { LogOut, LayoutDashboard, Home, Calendar, Users } from 'lucide-react';
+import { api } from '../services/api';
 
 const AdminDashboardNew: React.FC = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState<{ name: string; email: string } | null>(null);
     const [stats, setStats] = useState({
         properties: 0,
-        applications: 5, // Placeholder
-        showings: 8 // Placeholder
+        applications: 0,
+        showings: 0
     });
 
     useEffect(() => {
@@ -31,15 +32,17 @@ const AdminDashboardNew: React.FC = () => {
 
     const fetchStats = async () => {
         try {
-            // In a real app, we might have a dedicated stats endpoint.
-            // For now, we'll fetch properties to get the count.
-            const propsResponse = await fetch('http://localhost:3001/api/properties');
-            const propsData = await propsResponse.json();
+            const [properties, showings, applications] = await Promise.all([
+                api.properties.getAll(),
+                api.showings.getAll(),
+                api.applications.getAll()
+            ]);
 
-            setStats(prev => ({
-                ...prev,
-                properties: propsData.length
-            }));
+            setStats({
+                properties: properties.length,
+                showings: showings.filter(s => s.status === 'PENDING' || s.status === 'CONFIRMED').length,
+                applications: applications.filter(a => a.status === 'PENDING').length
+            });
         } catch (error) {
             console.error('Error fetching stats:', error);
         }
@@ -64,22 +67,22 @@ const AdminDashboardNew: React.FC = () => {
                     </div>
 
                     <nav className="space-y-2">
-                        <a href="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-lg text-white">
+                        <Link to="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-lg text-white">
                             <LayoutDashboard size={20} />
                             Dashboard
-                        </a>
-                        <a href="/admin/properties" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
+                        </Link>
+                        <Link to="/admin/properties" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
                             <Home size={20} />
                             Properties
-                        </a>
-                        <a href="#" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
+                        </Link>
+                        <Link to="/admin/showings" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
                             <Calendar size={20} />
                             Showings
-                        </a>
-                        <a href="#" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
+                        </Link>
+                        <Link to="/admin/applications" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
                             <Users size={20} />
                             Applications
-                        </a>
+                        </Link>
                     </nav>
                 </div>
 
