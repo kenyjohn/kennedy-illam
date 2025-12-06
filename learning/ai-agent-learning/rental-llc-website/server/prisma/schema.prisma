@@ -42,6 +42,9 @@ model Property {
   applications Application[]
   showings    Showing[]
   showingAvailability ShowingAvailability[]
+  tenants     Tenant[]
+  maintenanceRequests MaintenanceRequest[]
+  documents   Document[]
 }
 
 model PropertyImage {
@@ -150,4 +153,62 @@ model ShowingAvailability {
   
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
+}
+
+model Tenant {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  password    String
+  firstName   String
+  lastName    String
+  phone       String?
+  
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id])
+  unitNumber  String?
+  
+  leaseStart  DateTime?
+  leaseEnd    DateTime?
+  
+  documents   Document[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  maintenanceRequests MaintenanceRequest[]
+}
+
+model MaintenanceRequest {
+  id          String    @id @default(uuid())
+  tenantId    String
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id])
+  
+  category    String    // Plumbing, Electrical, Appliance, General, etc.
+  priority    String    // Low, Medium, High, Emergency
+  description String
+  photos      String?   // JSON string of image URLs
+  preferredAccessTimes String?
+  
+  status      String    @default("NEW") // NEW, IN_PROGRESS, SCHEDULED, COMPLETED, CANCELLED
+  adminNotes  String?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Document {
+  id          String   @id @default(uuid())
+  title       String
+  type        String   // LEASE, RULES, NOTICE, OTHER
+  url         String   // URL or path to file
+  
+  tenantId    String?
+  tenant      Tenant?  @relation(fields: [tenantId], references: [id])
+  
+  propertyId  String?
+  property    Property? @relation(fields: [propertyId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

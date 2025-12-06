@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -14,7 +14,16 @@ import TermsOfService from './pages/TermsOfService';
 import FairHousing from './pages/FairHousing';
 import AdminShowings from './pages/AdminShowings';
 import AdminApplications from './pages/AdminApplications';
+import AdminMaintenance from './pages/AdminMaintenance';
 import AvailabilityManager from './pages/AvailabilityManager';
+
+import TenantLogin from './pages/TenantLogin';
+import TenantLayout from './components/tenant/TenantLayout';
+import TenantDashboard from './pages/TenantDashboard';
+import TenantMaintenance from './pages/TenantMaintenance';
+import TenantDocuments from './pages/TenantDocuments';
+import AdminDocuments from './pages/AdminDocuments';
+import AdminLayout from './components/admin/AdminLayout';
 
 // Layout component for public pages
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
@@ -25,17 +34,43 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
+const ProtectedTenantRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = localStorage.getItem('tenantToken');
+  if (!token) {
+    return <Navigate to="/tenant/login" replace />;
+  }
+  return <>{children}</>;
+};
+
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Admin routes (no navbar/footer) */}
+        {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLoginNew />} />
-        <Route path="/admin/dashboard" element={<AdminDashboardNew />} />
-        <Route path="/admin/properties" element={<AdminProperties />} />
-        <Route path="/admin/showings" element={<AdminShowings />} />
-        <Route path="/admin/applications" element={<AdminApplications />} />
-        <Route path="/admin/properties/:propertyId/availability" element={<AvailabilityManager />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<AdminDashboardNew />} />
+          <Route path="properties" element={<AdminProperties />} />
+          <Route path="showings" element={<AdminShowings />} />
+          <Route path="applications" element={<AdminApplications />} />
+          <Route path="maintenance" element={<AdminMaintenance />} />
+          <Route path="documents" element={<AdminDocuments />} />
+          <Route path="properties/:propertyId/availability" element={<AvailabilityManager />} />
+        </Route>
+
+        {/* Tenant routes */}
+        <Route path="/tenant/login" element={<TenantLogin />} />
+        <Route path="/tenant" element={
+          <ProtectedTenantRoute>
+            <TenantLayout />
+          </ProtectedTenantRoute>
+        }>
+          <Route path="dashboard" element={<TenantDashboard />} />
+          <Route path="payments" element={<div>Payments Placeholder</div>} />
+          <Route path="maintenance" element={<TenantMaintenance />} />
+          <Route path="documents" element={<TenantDocuments />} />
+          <Route path="messages" element={<div>Messages Placeholder</div>} />
+        </Route>
 
         {/* Public routes (with navbar/footer) */}
         <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />

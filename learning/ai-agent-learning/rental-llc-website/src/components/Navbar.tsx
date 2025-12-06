@@ -12,6 +12,7 @@ const Navbar: React.FC = () => {
         { name: 'Home', path: '/', icon: <Home size={20} /> },
         { name: 'Properties', path: '/properties', icon: <Building size={20} /> },
         { name: 'Contact', path: '/contact', icon: <Phone size={20} /> },
+        { name: 'Tenant Portal', path: '/tenant/login', icon: <Building size={20} /> },
     ];
 
     return (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { LogOut, LayoutDashboard, Home, Calendar, Users, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
 import PropertyTable from '../components/admin/PropertyTable';
 import PropertyForm from '../components/admin/PropertyForm';
 import type { Property } from '../types';
@@ -68,11 +68,7 @@ const AdminProperties: React.FC = () => {
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('adminUser');
-        navigate('/admin/login');
-    };
+
 
     const handleEdit = (property: Property) => {
         setEditingProperty(property);
@@ -182,86 +178,45 @@ const AdminProperties: React.FC = () => {
     if (!user) return null;
 
     return (
-        <div className="min-h-screen bg-slate-50 flex">
-            {/* Sidebar */}
-            <aside className="w-64 bg-primary text-white hidden md:block fixed h-full">
-                <div className="p-6">
-                    <div className="flex items-center gap-2 mb-8">
-                        <img src="/logo-transparent.png" alt="Logo" className="h-8 w-auto" />
-                        <span className="font-bold text-lg">Admin Panel</span>
-                    </div>
 
-                    <nav className="space-y-2">
-                        <Link to="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
-                            <LayoutDashboard size={20} />
-                            Dashboard
-                        </Link>
-                        <Link to="/admin/properties" className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-lg text-white">
-                            <Home size={20} />
-                            Properties
-                        </Link>
-                        <Link to="/admin/showings" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
-                            <Calendar size={20} />
-                            Showings
-                        </Link>
-                        <Link to="/admin/applications" className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-white/5 rounded-lg transition-colors">
-                            <Users size={20} />
-                            Applications
-                        </Link>
-                    </nav>
+        <div>
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-2xl font-bold text-gray-900">Properties</h1>
+                <button
+                    onClick={() => {
+                        resetForm();
+                        setIsFormOpen(true);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+                >
+                    <Plus size={20} />
+                    Add Property
+                </button>
+            </div>
+
+            {loading ? (
+                <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                    <p className="mt-4 text-gray-600">Loading properties...</p>
                 </div>
+            ) : (
+                <PropertyTable
+                    properties={properties}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                    onToggleStatus={handleToggleStatus}
+                />
+            )}
 
-                <div className="absolute bottom-0 w-64 p-6 border-t border-white/10">
-                    <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors w-full"
-                    >
-                        <LogOut size={20} />
-                        Sign Out
-                    </button>
-                </div>
-            </aside>
-
-            {/* Main Content */}
-            <main className="flex-1 p-8 md:ml-64">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-2xl font-bold text-gray-900">Properties</h1>
-                    <button
-                        onClick={() => {
-                            resetForm();
-                            setIsFormOpen(true);
-                        }}
-                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-                    >
-                        <Plus size={20} />
-                        Add Property
-                    </button>
-                </div>
-
-                {loading ? (
-                    <div className="text-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-                        <p className="mt-4 text-gray-600">Loading properties...</p>
-                    </div>
-                ) : (
-                    <PropertyTable
-                        properties={properties}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                        onToggleStatus={handleToggleStatus}
-                    />
-                )}
-
-                {isFormOpen && (
-                    <PropertyForm
-                        formData={formData}
-                        setFormData={setFormData}
-                        onSubmit={handleSubmit}
-                        onClose={() => setIsFormOpen(false)}
-                        editingProperty={editingProperty}
-                    />
-                )}
-            </main>
+            {isFormOpen && (
+                <PropertyForm
+                    formData={formData}
+                    setFormData={setFormData}
+                    onSubmit={handleSubmit}
+                    onClose={() => setIsFormOpen(false)}
+                    editingProperty={editingProperty}
+                />
+            )}
         </div>
     );
 };

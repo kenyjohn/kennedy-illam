@@ -139,5 +139,87 @@ export const api = {
             });
             if (!response.ok) throw new Error('Failed to submit application');
         }
+    },
+    tenant: {
+        login: async (credentials: any) => {
+            const response = await fetch(`${API_BASE_URL}/auth/tenant/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(credentials),
+            });
+            if (!response.ok) throw new Error('Login failed');
+            return response.json();
+        },
+        verify: async (token: string) => {
+            const response = await fetch(`${API_BASE_URL}/auth/tenant/verify`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (!response.ok) throw new Error('Token verification failed');
+            return response.json();
+        },
+        getAll: async () => {
+            const response = await fetch(`${API_BASE_URL}/auth/tenant`, {
+                headers: getHeaders(),
+            });
+            if (!response.ok) throw new Error('Failed to fetch tenants');
+            return response.json();
+        }
+    },
+    maintenance: {
+        create: async (data: any) => {
+            const response = await fetch(`${API_BASE_URL}/maintenance`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            if (!response.ok) throw new Error('Failed to create maintenance request');
+            return response.json();
+        },
+        getAll: async (params: any = {}) => {
+            const query = new URLSearchParams(params).toString();
+            const response = await fetch(`${API_BASE_URL}/maintenance?${query}`, {
+                headers: getHeaders(),
+            });
+            if (!response.ok) throw new Error('Failed to fetch maintenance requests');
+            return response.json();
+        },
+        update: async (id: string, data: any) => {
+            const response = await fetch(`${API_BASE_URL}/maintenance/${id}`, {
+                method: 'PATCH',
+                headers: getHeaders(),
+                body: JSON.stringify(data),
+            });
+            if (!response.ok) throw new Error('Failed to update maintenance request');
+            return response.json();
+        }
+    },
+    documents: {
+        upload: async (formData: FormData) => {
+            // Note: Don't set Content-Type header manually for FormData, browser does it
+            const token = localStorage.getItem('adminToken') || localStorage.getItem('tenantToken');
+            const response = await fetch(`${API_BASE_URL}/documents`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${token}` },
+                body: formData,
+            });
+            if (!response.ok) throw new Error('Failed to upload document');
+            return response.json();
+        },
+        getAll: async (params: any = {}) => {
+            const query = new URLSearchParams(params).toString();
+            const response = await fetch(`${API_BASE_URL}/documents?${query}`, {
+                headers: getHeaders(),
+            });
+            if (!response.ok) throw new Error('Failed to fetch documents');
+            return response.json();
+        },
+        delete: async (id: string) => {
+            const response = await fetch(`${API_BASE_URL}/documents/${id}`, {
+                method: 'DELETE',
+                headers: getHeaders(),
+            });
+            if (!response.ok) throw new Error('Failed to delete document');
+            return response.json();
+        }
     }
 };
