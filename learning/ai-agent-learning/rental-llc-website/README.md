@@ -8,11 +8,12 @@ A modern, responsive rental property management website built with React, TypeSc
 - **Home Page**: Featured properties and company overview.
 - **Properties Listing**: Browse available rental properties with filtering.
 - **Property Details**: Detailed view of property features, images, and location.
+- **Showing Scheduler**: Integrated tool for potential tenants to book property viewings directly from the property page.
 - **Contact Form**: Easy way for potential tenants to get in touch.
 - **Application Form**: Online rental application submission.
 
-### Admin Dashboard (Phase 2)
-- **Secure Login**: Admin authentication system.
+### Admin Dashboard
+- **Secure Login**: Admin authentication system (Default: `admin@rental.com` / `admin123`).
 - **Dashboard Overview**: Quick stats on total properties, applications, and showings.
 - **Property Management**:
   - View all properties in a table format.
@@ -20,6 +21,16 @@ A modern, responsive rental property management website built with React, TypeSc
   - Edit existing property information.
   - Delete properties.
   - Toggle property availability status.
+- **Integration**: Accessible via the "Admin Portal" link in the website footer.
+
+### Tenant Portal
+- **Secure Login**: Dedicated portal for tenants to manage their rental experience.
+- **Dashboard**: Overview of lease status, payments, and maintenance requests.
+- **Features**:
+  - Lease management.
+  - Document viewing.
+  - Maintenance request submission.
+- **Integration**: Accessible via the "Tenant Portal" link in the main navigation bar.
 
 ## Tech Stack
 - **Frontend**: React, TypeScript, Vite, Tailwind CSS
@@ -72,8 +83,8 @@ A modern, responsive rental property management website built with React, TypeSc
 
 3.  Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-## Phase 2 Implementation Details
-- Integrated Admin Dashboard with real backend data.
-- Created `AdminProperties` page for full CRUD operations on properties.
-- Updated `AdminDashboard` to reflect real-time property counts.
-- Fixed backend module resolution issues by migrating to `tsx`.
+## Phase 3 Implementation Details
+- **Full Portal Integration**: Admin and Tenant portals are now fully linked from the main public site.
+- **Showing Scheduler**: Implemented end-to-end showing scheduling functionality.
+- **Properties Page Fix**: Resolved backend connection issues to ensure properties load correctly.
+- **Navigation Update**: Updated Navbar and Footer for seamless navigation between public, admin, and tenant sections.
